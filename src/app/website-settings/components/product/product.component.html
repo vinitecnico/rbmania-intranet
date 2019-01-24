@@ -1,0 +1,70 @@
+<div>
+    <button mat-raised-button (click)="openModal()" color="primary" class="mb-3">
+        <i class="fa fa-plus"></i> Novo
+    </button>
+    <div class="table-container" *ngIf="isFinally && isShowTable">
+        <div class="table-header">
+            <mat-form-field>
+                <input matInput #searchTextRef placeholder="Pesquisar">
+            </mat-form-field>
+        </div>
+        <mat-table #table [dataSource]="dataSource" (matSortChange)="sortData($event)" matSort matSortActive="name"
+            matSortDirection="asc" matSortDisableClear style="width: 100%;">
+
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="name">
+                    Name
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="img">
+                <mat-header-cell *matHeaderCellDef>
+                    Imagem
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <img src="{{element.img}}" alt="{{element.img}}" class="rounded float-left" style="max-width: 24px;">
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="status">
+                    status
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.status ? 'Ativo': 'Inativo'}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="featured">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="featured">
+                    Vitrine
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.featured ? 'Sim': 'Não'}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="price">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="price">
+                    price
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element"> R$ {{element?.price / 100 | number : '1.2-2'}} </mat-cell>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="options">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <mat-icon class="btn" mat-button (click)="openModal(element)" matTooltip="Editar">mode_edit</mat-icon>
+                    <mat-icon class="btn" mat-button (click)="openModalDelete(element)" matTooltip="Excluir">delete</mat-icon>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </div>
+
+    <div *ngIf="isFinally && !isShowTable">
+        <div class="alert alert-info" role="alert">
+            <strong>ops ;(</strong> - você ainda não tem Produto cadastrado!
+        </div>
+    </div>
+</div>

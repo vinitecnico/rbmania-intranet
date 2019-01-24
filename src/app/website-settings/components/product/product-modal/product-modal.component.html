@@ -1,0 +1,227 @@
+<div class="no-breadcrumbs">
+    <div class="row">
+        <div class="col-10 col-md-10">
+            <h2 class="md-header-title" mat-dialog-title *ngIf="!data.id; else editHeader">Criar Produto</h2>
+
+            <ng-template #editHeader>
+                <h2 class="md-header-title" mat-dialog-title>Editar Produto</h2>
+            </ng-template>
+        </div>
+        <div class="col-2 col-md-2 md-close-button">
+            <span (click)="closeDialog()" class="cursor-pointer">
+                <mat-icon class="btn" matTooltip="Fechar">close</mat-icon>
+            </span>
+        </div>
+    </div>
+</div>
+
+<section mat-dialog-content class="container with-maxwidth chapter">
+    <article class="article">
+        <div class="box box-default">
+            <div class="box-body">
+                <form [formGroup]="form">
+                    <div class="row">
+                        <div class="col-12 col-md-12">
+                            <mat-form-field class="full-width">
+                                <input matInput formControlName="name" placeholder="nome">
+                                <mat-error>
+                                    campo obrigatorio
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <mat-form-field class="full-width">
+                                <mat-select placeholder="Status" formControlName="status">
+                                    <mat-option value="true">Ativo</mat-option>
+                                    <mat-option value="false">inativo</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <mat-form-field class="full-width">
+                                <mat-select placeholder="Vitrine" formControlName="featured">
+                                    <mat-option value="true">Sim</mat-option>
+                                    <mat-option value="false">Não</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <mat-form-field class="full-width">
+                                <mat-select placeholder="Categoria" formControlName="category" (selectionChange)="setSubCategory($event.value)">
+                                    <mat-option *ngFor="let category of categories" [value]="category.id">
+                                        {{category.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <mat-form-field class="full-width">
+                                <mat-select placeholder="SubCategory" formControlName="subCategory">
+                                    <mat-option *ngFor="let subCategory of subCategories" [value]="subCategory.id">
+                                        {{subCategory.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-12">
+                            <mat-form-field class="full-width">
+                                <textarea matInput placeholder="Descrição" formControlName="description"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-12">
+                            <mat-form-field class="full-width">
+                                <textarea matInput placeholder="Conteúdo da embalagem" formControlName="packageContent"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <mat-form-field class="full-width">
+                                <input matInput formControlName="quantity" placeholder="Quantidade" type="number">
+                                <mat-error>
+                                    campo obrigatorio
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <mat-form-field class="full-width">
+                                <input matInput formControlName="oldPrice" placeholder="Preço Velho" step='0.01' type="number">
+                                <mat-error>
+                                    campo obrigatorio
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <mat-form-field class="full-width">
+                                <input matInput formControlName="price" placeholder="Preço Novo" step='0.01' type="number">
+                                <mat-error>
+                                    campo obrigatorio
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <mat-form-field class="full-width">
+                                <input matInput formControlName="reference" placeholder="Referência">
+                                <mat-error>
+                                    campo obrigatorio
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <mat-form-field class="full-width">
+                                <img src="{{imgItem}}" alt="{{imgItem}}" class="rounded float-left" style="max-width: 24px;">
+                                <input matInput formControlName="img" placeholder="Imagem principal" [(ngModel)]="imgItem" style="width: 70%;">
+                                <mat-error>
+                                    campo obrigatorio
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-12">
+                            <h4>Imagens</h4>
+                            <div class="actionBar">
+                                <mat-table #table [dataSource]="dataSource" style="width: 100%;" *ngIf="isFinally && isShowTable">
+
+                                    <!-- Position Column -->
+                                    <ng-container matColumnDef="big">
+                                        <mat-header-cell *matHeaderCellDef>
+                                            Grande
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element">
+                                            <img src="{{element.big}}" alt="{{element.big}}" class="rounded float-left"
+                                                style="max-width: 24px;">
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="medium">
+                                        <mat-header-cell *matHeaderCellDef>
+                                            Média
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element">
+                                            <img src="{{element.medium}}" alt="{{element.medium}}" class="rounded float-left"
+                                                style="max-width: 24px;">
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="small">
+                                        <mat-header-cell *matHeaderCellDef>
+                                            Pequena
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element">
+                                            <img src="{{element.small}}" alt="{{element.small}}" class="rounded float-left"
+                                                style="max-width: 24px;">
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <!-- Symbol Column -->
+                                    <ng-container matColumnDef="options">
+                                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                                        <mat-cell *matCellDef="let element; let i = index;">
+                                            <mat-icon class="btn" mat-button (click)="setEditPhoto(element, i)"
+                                                matTooltip="Editar">mode_edit</mat-icon>
+                                            <mat-icon class="btn" mat-button (click)="removePhoto(i)" matTooltip="Excluir">delete</mat-icon>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                                </mat-table>
+                                <div *ngIf="isFinally && !isShowTable">
+                                    <div class="alert alert-info" role="alert" style="text-align: left;">
+                                        <strong>ops ;(</strong> - Ainda não possue imagens cadastradas!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form [formGroup]="formImg">
+                    <div class="row">
+                        <div class="col-12 col-md-3">
+                            <mat-form-field class="full-width">
+                                <input matInput formControlName="big" placeholder="Grande">
+                                <mat-error>
+                                    campo obrigatorio
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <mat-form-field class="full-width">
+                                <input matInput formControlName="medium" placeholder="Média">
+                                <mat-error>
+                                    campo obrigatorio
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <mat-form-field class="full-width">
+                                <input matInput formControlName="small" placeholder="Pequena">
+                                <mat-error>
+                                    campo obrigatorio
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <button color="primary" mat-raised-button (click)="createOrEditPhoto()">Incluir</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </article>
+</section>
+<div class="actionBar" style="margin-bottom: 1%;">
+    <button color="cancel" style="margin-right: 5px;" mat-raised-button (click)="closeDialog()">cancelar</button>
+    <button color="primary" mat-raised-button (click)="createOrUpdate()">Salvar</button>
+</div>

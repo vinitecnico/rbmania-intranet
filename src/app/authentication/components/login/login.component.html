@@ -1,0 +1,40 @@
+<div class="login-title">
+    <h3>RbMania</h3>
+</div>
+<form [formGroup]="form">
+    <div class="container-fluid login-body card shadow rounded">
+        <div class="row">
+            <div class="col-sm-12">
+                <mat-form-field class="full-width" style="width: 100%;">
+                    <input matInput formControlName="username" placeholder="Usuário">
+                    <mat-error>
+                        campo obrigatorio
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <mat-form-field class="full-width" style="width: 100%;">
+                    <input matInput formControlName="password" placeholder="Senha" type="password" maxlength="20">
+                    <mat-error>
+                        campo obrigatorio
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <button mat-raised-button color="primary" (click)="login()">Login</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 link">
+                <a href="#">Esqueceu a senha?</a>
+            </div>
+        </div>
+    </div>
+</form>
+<footer>
+    <p>RbMania - 2019</p>
+</footer>

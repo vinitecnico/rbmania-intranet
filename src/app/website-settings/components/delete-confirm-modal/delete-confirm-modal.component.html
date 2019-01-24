@@ -1,0 +1,13 @@
+<section mat-dialog-content class="container with-maxwidth chapter">
+    <article class="article">
+        <div class="box box-default">
+            <div class="box-body">
+                <h3 style="font-weight: normal;">Deseja realmente apagar o produto <strong>{{data.name}}</strong>?</h3>
+            </div>
+        </div>
+    </article>
+</section>
+<div class="actionBar" style="margin-bottom: 1%;">
+    <button color="cancel" mat-raised-button (click)="closeDialog()" style="margin-right: 5px;">cancelar</button>
+    <button color="primary" mat-raised-button (click)="closeDialog(data)">Delete</button>
+</div>
