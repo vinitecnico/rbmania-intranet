@@ -28,6 +28,7 @@ export class ProductModalComponent implements OnInit {
     displayedColumns: string[] = ['big', 'medium', 'small', 'options'];
     dataSource = new MatTableDataSource<any>();
     indexPhoto: number;
+    imgItem: string;
     constructor(
         public dialogRef: MatDialogRef<ProductModalComponent>,
         private formBuilder: FormBuilder,
