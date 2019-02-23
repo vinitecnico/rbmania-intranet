@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Sort, MatDialog, MatSort, MatTableDataSource } from '@angular/material';
 import 'rxjs/Rx';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 // Modal
 import { ProductModalComponent } from './product-modal/product-modal.component';
@@ -10,6 +11,7 @@ import { DeleteConfirmModalComponent } from '../delete-confirm-modal/delete-conf
 
 // services
 import { ProductService } from '../../services/product.service';
+import { ExcelService } from '../../services/excel.service';
 
 declare var swal: any;
 
@@ -26,7 +28,7 @@ export class ProductComponent implements OnInit {
     dataItems: any;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild('searchTextRef') searchTextRef: ElementRef;
-    constructor(private productService: ProductService, public dialog: MatDialog) {
+    constructor(private productService: ProductService, public dialog: MatDialog, private excelService: ExcelService) {
     }
 
     ngOnInit() {
@@ -134,5 +136,9 @@ export class ProductComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed');
         });
+    }
+
+    exportAsXLSX(): void {
+        this.excelService.exportAsExcelFile(this.dataSource.data, `rbmania-products-${moment().format('YYYY-MM-DD-HH-mm-SS')}`);
     }
 }

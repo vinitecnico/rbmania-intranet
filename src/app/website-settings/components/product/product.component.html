@@ -1,4 +1,7 @@
 <div>
+    <button *ngIf="dataSource && dataSource.data.length > 0" class="btn btn-success" (click)="exportAsXLSX()" style="margin-right: 5px;">
+        <i class="fa fa-file-excel-o" style="font-size:20px;color:white;"></i>
+    </button>
     <button mat-raised-button (click)="openModal()" color="primary" class="mb-3">
         <i class="fa fa-plus"></i> Novo
     </button>

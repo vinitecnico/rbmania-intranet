@@ -27,6 +27,7 @@ import { DeleteConfirmModalComponent } from './components/delete-confirm-modal/d
 // Services
 import { ProductService } from './services/product.service';
 import { MenuService } from './services/menu.service';
+import { ExcelService } from './services/excel.service';
 
 // Router
 import { WebsiteRoutingModule } from './website-routing.module';
@@ -64,6 +65,6 @@ import { SharedModule } from '../shared/shared.module';
     entryComponents: [
         ProductModalComponent, DeleteConfirmModalComponent
     ],
-    providers: [ProductService, MenuService]
+    providers: [ProductService, MenuService, ExcelService]
 })
 export class WebsiteSettingsModule { }
